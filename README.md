@@ -7,7 +7,7 @@ This repository contains a complete beginner-friendly computational biology work
 
 The project starts from an EGFR DNA FASTA sequence, converts it into mRNA, translates the mRNA into a protein sequence, prepares the EGFR kinase domain for AlphaFold2 or ColabFold, and then performs docking of erlotinib into the EGFR binding pocket using GNINA.
 
-<img width="800" height="500" alt="workflow_overview" src="https://github.com/user-attachments/assets/71f686dd-bc04-4967-85b2-e2d646ff48cb" />
+<img width="700" height="300" alt="workflow_overview" src="https://github.com/user-attachments/assets/71f686dd-bc04-4967-85b2-e2d646ff48cb" />
 
 
 ---
@@ -47,7 +47,7 @@ The first part of the notebook follows the central dogma of molecular biology:
 2. mRNA is produced from DNA during transcription.
 3. Protein is produced from mRNA during translation.
 
-<img width="800" height="500" alt="central_dogma" src="https://github.com/user-attachments/assets/ad61ba05-c1ef-43a9-ab47-af9d57e8a9e1" />
+<img width="700" height="300" alt="central_dogma" src="https://github.com/user-attachments/assets/ad61ba05-c1ef-43a9-ab47-af9d57e8a9e1" />
 
 
 In this notebook, the DNA sequence is expected to be a coding sequence. That means it should represent the protein-coding portion of EGFR without introns. This is important because normal genomic DNA contains introns, which must be removed before translation. If a full genomic sequence with introns is used directly, the translated protein may be incorrect.
@@ -61,7 +61,7 @@ AlphaFold2 predicts a protein's three-dimensional structure from its amino acid 
 
 GNINA is a molecular docking tool that predicts how a ligand may bind inside a receptor binding pocket. It can report traditional docking scores and CNN-based scores. In this notebook, erlotinib is docked into the EGFR kinase domain binding site.
 
-<img width="800" height="500" alt="gnina_docking_concept" src="https://github.com/user-attachments/assets/920fe33f-739b-43a7-b5ed-929b105ecc7e" />
+<img width="700" height="300" alt="gnina_docking_concept" src="https://github.com/user-attachments/assets/920fe33f-739b-43a7-b5ed-929b105ecc7e" />
 
 
 ---
@@ -82,36 +82,6 @@ The notebook uses the following tools:
 | AlphaFold2 / ColabFold | Predicting EGFR kinase-domain 3D structure |
 | GNINA | Performing molecular docking |
 | RCSB PDB structure 1M17 | EGFR kinase domain structure containing erlotinib ligand |
-
----
-
-## Repository Structure
-
-The notebook creates a project folder called `EGFR_Project`. The expected organization is shown below.
-
-![Folder structure](images/folder_structure.png)
-
-```text
-EGFR_Project/
-├── data/
-│   ├── egfr_dna.fasta
-│   ├── egfr_mrna.fasta
-│   ├── egfr_protein.fasta
-│   └── egfr_kinase_domain_for_alphafold.fasta
-├── structures/
-│   ├── egfr_1m17.pdb
-│   ├── egfr_receptor.pdb
-│   ├── erlotinib_from_pdb.pdb
-│   └── erlotinib.sdf
-├── alphafold_results/
-│   └── uploaded AlphaFold2 predicted PDB file
-├── docking_results/
-│   ├── egfr_erlotinib_docked.sdf
-│   ├── gnina_log.txt
-│   └── docking_scores.csv
-├── scripts/
-└── images/
-```
 
 ---
 
@@ -476,6 +446,9 @@ Protein structures are easier to understand visually than as coordinate files. C
 
 A 3D interactive protein model should appear inside the notebook. The user can rotate, zoom, and inspect the predicted structure.
 
+<img width="700" height="300" alt="alphafold structure" src="https://github.com/user-attachments/assets/5b59300d-811e-4ff7-bb15-f863ca29efe1" />
+
+
 ---
 
 ## Step 13. Download an EGFR Crystal Structure for GNINA Docking
@@ -782,35 +755,8 @@ Then `py3Dmol` displays:
 
 Docking scores are useful, but visual inspection is also important. Visualization helps confirm whether the ligand is positioned inside the expected binding pocket.
 
-### What to inspect
+<img width="700" height="300" alt="Gnina result" src="https://github.com/user-attachments/assets/f90868c9-0244-4f54-bc49-ff1384de6fce" />
 
-When viewing the complex, check:
-
-- Is the ligand inside the binding pocket?
-- Is the ligand far away from the receptor? If yes, docking may have failed.
-- Does the ligand overlap unrealistically with protein atoms?
-- Are the poses clustered around the active site?
-
----
-
-## Expected Output Files
-
-After successful execution, the project should contain these important outputs:
-
-| File | Description |
-|---|---|
-| `egfr_dna.fasta` | Cleaned DNA sequence |
-| `egfr_mrna.fasta` | mRNA sequence transcribed from DNA |
-| `egfr_protein.fasta` | Protein sequence translated from mRNA |
-| `egfr_kinase_domain_for_alphafold.fasta` | EGFR kinase-domain sequence for AlphaFold2 |
-| AlphaFold2 `.pdb` file | Predicted EGFR kinase-domain structure |
-| `egfr_1m17.pdb` | Downloaded experimental EGFR-erlotinib PDB structure |
-| `egfr_receptor.pdb` | Protein receptor extracted from 1M17 |
-| `erlotinib_from_pdb.pdb` | Erlotinib ligand extracted from 1M17 |
-| `erlotinib.sdf` | Ligand converted into SDF format |
-| `egfr_erlotinib_docked.sdf` | GNINA docked ligand poses |
-| `gnina_log.txt` | GNINA docking log and scores |
-| `docking_scores.csv` | Docking scores saved as a table |
 
 ---
 

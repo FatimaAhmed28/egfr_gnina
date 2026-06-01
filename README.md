@@ -7,7 +7,7 @@ This repository contains a complete beginner-friendly computational biology work
 
 The project starts from an EGFR DNA FASTA sequence, converts it into mRNA, translates the mRNA into a protein sequence, prepares the EGFR kinase domain for AlphaFold2 or ColabFold, and then performs docking of erlotinib into the EGFR binding pocket using GNINA.
 
-<img width="700" height="300" alt="workflow_overview" src="https://github.com/user-attachments/assets/71f686dd-bc04-4967-85b2-e2d646ff48cb" />
+<img width="800" height="300" alt="workflow_overview" src="https://github.com/user-attachments/assets/71f686dd-bc04-4967-85b2-e2d646ff48cb" />
 
 
 ---
@@ -47,7 +47,7 @@ The first part of the notebook follows the central dogma of molecular biology:
 2. mRNA is produced from DNA during transcription.
 3. Protein is produced from mRNA during translation.
 
-<img width="700" height="300" alt="central_dogma" src="https://github.com/user-attachments/assets/ad61ba05-c1ef-43a9-ab47-af9d57e8a9e1" />
+<img width="800" height="300" alt="central_dogma" src="https://github.com/user-attachments/assets/ad61ba05-c1ef-43a9-ab47-af9d57e8a9e1" />
 
 
 In this notebook, the DNA sequence is expected to be a coding sequence. That means it should represent the protein-coding portion of EGFR without introns. This is important because normal genomic DNA contains introns, which must be removed before translation. If a full genomic sequence with introns is used directly, the translated protein may be incorrect.
@@ -61,7 +61,7 @@ AlphaFold2 predicts a protein's three-dimensional structure from its amino acid 
 
 GNINA is a molecular docking tool that predicts how a ligand may bind inside a receptor binding pocket. It can report traditional docking scores and CNN-based scores. In this notebook, erlotinib is docked into the EGFR kinase domain binding site.
 
-<img width="700" height="300" alt="gnina_docking_concept" src="https://github.com/user-attachments/assets/920fe33f-739b-43a7-b5ed-929b105ecc7e" />
+<img width="800" height="300" alt="gnina_docking_concept" src="https://github.com/user-attachments/assets/920fe33f-739b-43a7-b5ed-929b105ecc7e" />
 
 
 ---
@@ -446,7 +446,7 @@ Protein structures are easier to understand visually than as coordinate files. C
 
 A 3D interactive protein model should appear inside the notebook. The user can rotate, zoom, and inspect the predicted structure.
 
-<img width="700" height="300" alt="alphafold structure" src="https://github.com/user-attachments/assets/5b59300d-811e-4ff7-bb15-f863ca29efe1" />
+<img width="800" height="500" alt="alphafold structure" src="https://github.com/user-attachments/assets/5b59300d-811e-4ff7-bb15-f863ca29efe1" />
 
 
 ---
@@ -755,7 +755,7 @@ Then `py3Dmol` displays:
 
 Docking scores are useful, but visual inspection is also important. Visualization helps confirm whether the ligand is positioned inside the expected binding pocket.
 
-<img width="700" height="300" alt="Gnina result" src="https://github.com/user-attachments/assets/f90868c9-0244-4f54-bc49-ff1384de6fce" />
+<img width="800" height="500" alt="Gnina result" src="https://github.com/user-attachments/assets/f90868c9-0244-4f54-bc49-ff1384de6fce" />
 
 
 ---

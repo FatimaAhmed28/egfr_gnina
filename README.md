@@ -704,34 +704,39 @@ Viewing the log lets the user check whether docking completed successfully and w
 ## Step 20. Save Docking Scores as a CSV File
 
 The notebook parses the GNINA log file and saves the scores into a CSV file.
+## Docking Results
+
+Molecular docking generated nine predicted binding poses. The docking affinity values are reported in kcal/mol, where more negative values generally indicate stronger predicted binding. CNN score and CNN affinity are additional neural-network-based scoring metrics used to estimate pose quality and binding strength.
+
 
 ### Output file
 
 ```text
 EGFR_Project/docking_results/docking_scores.csv
+
+
+| Mode | Affinity (kcal/mol) | CNN Score | CNN Affinity |
+|---:|---:|---:|---:|
+| 1 | -7.00 | -0.72 | 0.9207 |
+| 2 | -7.22 | -0.90 | 0.9141 |
+| 3 | -7.48 | -0.03 | 0.8995 |
+| 4 | -6.40 | -0.87 | 0.8343 |
+| 5 | -6.34 | -1.13 | 0.8194 |
+| 6 | -7.28 | -0.55 | 0.7370 |
+| 7 | -7.16 | -0.69 | 0.7227 |
+| 8 | -6.66 | -0.62 | 0.6619 |
+| 9 | -6.49 | -1.15 | 0.6589 |
+
+
+
 ```
+### Interpretation
 
-### Why CSV is useful
+The best docking affinity was observed for **mode 3**, with a binding energy of **-7.48 kcal/mol**, suggesting it is the strongest predicted binding pose among the generated conformations. Modes **6**, **2**, and **7** also showed favorable binding affinities, with scores of **-7.28**, **-7.22**, and **-7.16 kcal/mol**, respectively.
 
-CSV format is easy to open in:
+Although mode 3 has the most negative binding affinity, mode 1 has the highest CNN affinity value (**0.9207**), followed closely by mode 2 (**0.9141**) and mode 3 (**0.8995**). This suggests that modes 1–3 are the most reliable poses overall when considering both docking energy and CNN-based scoring.
 
-- Microsoft Excel
-- Google Sheets
-- Python pandas
-- R
-- statistical software
-
-This makes the docking results easier to include in a report, table, graph, or GitHub project.
-
-### Example table format
-
-```text
-mode,affinity_kcal_mol,cnn_score,cnn_affinity
-1,-8.5,0.72,-7.9
-2,-8.1,0.65,-7.4
-```
-
-The exact values depend on the docking run.
+Overall, the docking results indicate that the ligand shows favorable predicted binding to the target protein, with the top-ranked poses falling around **-7.0 to -7.5 kcal/mol**. These poses may be selected for further visualization, interaction analysis, or molecular dynamics simulation.
 
 ---
 

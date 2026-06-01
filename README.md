@@ -1,3 +1,4 @@
+
 # EGFR Protein Structure Prediction and Molecular Docking Using AlphaFold2 and GNINA
 
 This repository contains a complete beginner-friendly computational biology workflow for the **EGFR gene/protein**. The notebook follows the biological order of information flow:
@@ -6,23 +7,8 @@ This repository contains a complete beginner-friendly computational biology work
 
 The project starts from an EGFR DNA FASTA sequence, converts it into mRNA, translates the mRNA into a protein sequence, prepares the EGFR kinase domain for AlphaFold2 or ColabFold, and then performs docking of erlotinib into the EGFR binding pocket using GNINA.
 
-![Complete workflow](images/workflow_overview.png)
+<img width="800" height="500" alt="workflow_overview" src="https://github.com/user-attachments/assets/71f686dd-bc04-4967-85b2-e2d646ff48cb" />
 
----
-
-## Table of Contents
-
-1. [Project Aim](#project-aim)
-2. [Biological Background](#biological-background)
-3. [Software and Tools Used](#software-and-tools-used)
-4. [Repository Structure](#repository-structure)
-5. [Input Files](#input-files)
-6. [Step-by-Step Workflow](#step-by-step-workflow)
-7. [Expected Output Files](#expected-output-files)
-8. [How to Run the Notebook](#how-to-run-the-notebook)
-9. [Interpreting the Results](#interpreting-the-results)
-10. [Important Notes and Limitations](#important-notes-and-limitations)
-11. [References](#references)
 
 ---
 
@@ -49,7 +35,7 @@ This project is useful for students learning:
 
 ### EGFR
 
-**EGFR**, or epidermal growth factor receptor, is a receptor tyrosine kinase. It is involved in cell growth, cell division, and signaling pathways. Mutations or overactivity of EGFR are associated with several cancers, especially some lung cancers.
+EGFR, or epidermal growth factor receptor, is a receptor tyrosine kinase. It is involved in cell growth, cell division, and signaling pathways. Mutations or overactivity of EGFR are associated with several cancers, especially some lung cancers.
 
 EGFR has multiple regions, including an extracellular ligand-binding region, a transmembrane region, and an intracellular kinase domain. The kinase domain is important because many EGFR inhibitors bind in or near its ATP-binding pocket.
 
@@ -57,25 +43,26 @@ EGFR has multiple regions, including an extracellular ligand-binding region, a t
 
 The first part of the notebook follows the central dogma of molecular biology:
 
-1. **DNA** stores genetic information.
-2. **mRNA** is produced from DNA during transcription.
-3. **Protein** is produced from mRNA during translation.
+1. DNA stores genetic information.
+2. mRNA is produced from DNA during transcription.
+3. Protein is produced from mRNA during translation.
 
-![Central dogma](images/central_dogma.png)
+<img width="800" height="500" alt="central_dogma" src="https://github.com/user-attachments/assets/ad61ba05-c1ef-43a9-ab47-af9d57e8a9e1" />
 
-In this notebook, the DNA sequence is expected to be a **coding sequence**. That means it should represent the protein-coding portion of EGFR without introns. This is important because normal genomic DNA contains introns, which must be removed before translation. If a full genomic sequence with introns is used directly, the translated protein may be incorrect.
+
+In this notebook, the DNA sequence is expected to be a coding sequence. That means it should represent the protein-coding portion of EGFR without introns. This is important because normal genomic DNA contains introns, which must be removed before translation. If a full genomic sequence with introns is used directly, the translated protein may be incorrect.
 
 ### AlphaFold2
 
 AlphaFold2 predicts a protein's three-dimensional structure from its amino acid sequence. In this project, the EGFR kinase domain sequence is prepared for AlphaFold2 or ColabFold. The predicted PDB file is then uploaded back into the notebook and visualized.
 
-![AlphaFold2 concept](images/alphafold2_concept.png)
 
 ### GNINA
 
 GNINA is a molecular docking tool that predicts how a ligand may bind inside a receptor binding pocket. It can report traditional docking scores and CNN-based scores. In this notebook, erlotinib is docked into the EGFR kinase domain binding site.
 
-![GNINA docking concept](images/gnina_docking_concept.png)
+<img width="800" height="500" alt="gnina_docking_concept" src="https://github.com/user-attachments/assets/920fe33f-739b-43a7-b5ed-929b105ecc7e" />
+
 
 ---
 
@@ -139,15 +126,6 @@ Recommended filename:
 ```text
 egfr_dna.fasta
 ```
-
-Example FASTA format:
-
-```text
->EGFR_DNA
-ATGCGACCCTCCGGGACGGCCGGGGCAGCGCTCCTGGCGCTGCTGGCTGCGCTCTGCCCGGCGAGTCG...
-```
-
-This is only a shortened formatting example. Do not copy the shortened sequence as analysis input. For real analysis, use a complete verified EGFR coding sequence from a reliable biological database.
 
 ### AlphaFold2 PDB input
 
@@ -248,15 +226,7 @@ The notebook automatically detects FASTA files and reads the DNA sequence using 
 
 ### What happens in this step
 
-The code searches for files ending with:
-
-```text
-.fasta
-.fa
-.fna
-```
-
-It then reads the first detected FASTA file and stores the sequence as `egfr_dna`.
+It reads the first detected FASTA file and stores the sequence as `egfr_dna`.
 
 The code also cleans the sequence by keeping only valid DNA bases:
 
@@ -384,50 +354,7 @@ EGFR_Project/scripts
 EGFR_Project/images
 ```
 
-### Why this step is important
-
-Computational biology projects can produce many files. A clean folder structure makes the workflow easier to understand, repeat, and upload to GitHub.
-
-Each folder has a specific purpose:
-
-- `data/` stores DNA, RNA, and protein FASTA files.
-- `structures/` stores PDB and ligand structure files.
-- `alphafold_results/` stores predicted AlphaFold2 PDB files.
-- `docking_results/` stores GNINA docking output.
-- `scripts/` can store helper scripts.
-- `images/` stores figures and screenshots.
-
----
-
-## Step 8. Save Sequence Files into the Project Folder
-
-The notebook copies the generated sequence files into the project data folder.
-
-Files copied:
-
-```text
-egfr_dna.fasta
-egfr_mrna.fasta
-egfr_protein.fasta
-```
-
-Destination folder:
-
-```text
-EGFR_Project/data/
-```
-
-### Why this step is important
-
-This step preserves the central dogma sequence outputs in one location. It also makes the project easier to inspect because all sequence-related files are stored together.
-
-### Expected result
-
-Running `ls -lh EGFR_Project/data/` should show the DNA, mRNA, and protein FASTA files.
-
----
-
-## Step 9. Prepare the EGFR Kinase-Domain FASTA for AlphaFold2
+## Step 8. Prepare the EGFR Kinase-Domain FASTA for AlphaFold2
 
 The full EGFR protein is large. The notebook extracts the kinase-domain region for structure prediction.
 
@@ -461,7 +388,7 @@ This is the sequence that should be submitted to AlphaFold2 or ColabFold.
 
 ---
 
-## Step 10. Display the AlphaFold2 Input Sequence
+## Step 9. Display the AlphaFold2 Input Sequence
 
 The notebook prints the kinase-domain FASTA sequence.
 
@@ -480,7 +407,7 @@ Confirm that:
 
 ---
 
-## Step 11. Upload the AlphaFold2 Predicted PDB File
+## Step 10. Upload the AlphaFold2 Predicted PDB File
 
 After running AlphaFold2 or ColabFold externally, the predicted PDB structure is uploaded into the notebook.
 
@@ -504,7 +431,7 @@ The predicted PDB file is needed for visualization and project documentation. It
 
 ---
 
-## Step 12. Move AlphaFold2 Structures into the Results Folder
+## Step 11. Move AlphaFold2 Structures into the Results Folder
 
 The uploaded AlphaFold2 PDB file is moved into:
 
@@ -523,7 +450,7 @@ This separation avoids confusion when reviewing files later.
 
 ---
 
-## Step 13. Visualize the AlphaFold2 Predicted Structure
+## Step 12. Visualize the AlphaFold2 Predicted Structure
 
 The notebook uses `py3Dmol` to display the AlphaFold2 predicted EGFR kinase-domain structure.
 
@@ -551,7 +478,7 @@ A 3D interactive protein model should appear inside the notebook. The user can r
 
 ---
 
-## Step 14. Download an EGFR Crystal Structure for GNINA Docking
+## Step 13. Download an EGFR Crystal Structure for GNINA Docking
 
 The notebook downloads the EGFR crystal structure with PDB ID:
 
@@ -583,7 +510,7 @@ Protein sequence → predicted structure → docking study
 
 ---
 
-## Step 15. Separate Receptor and Ligand from the PDB File
+## Step 14. Separate Receptor and Ligand from the PDB File
 
 Docking requires the receptor and ligand to be stored as separate files.
 
@@ -614,7 +541,7 @@ GNINA needs a receptor file and ligand file. If the ligand remains inside the re
 
 ---
 
-## Step 16. Install and Check GNINA
+## Step 15. Install and Check GNINA
 
 The notebook downloads GNINA and makes it executable.
 
@@ -643,7 +570,7 @@ The output should show GNINA help text. If it appears, GNINA is installed and re
 
 ---
 
-## Step 17. Convert the Ligand into SDF Format
+## Step 16. Convert the Ligand into SDF Format
 
 The extracted erlotinib ligand is converted from PDB format into SDF format using Open Babel.
 
@@ -675,7 +602,7 @@ After conversion, the SDF file should appear in the `structures/` folder.
 
 ---
 
-## Step 18. Calculate the Docking Box Center
+## Step 17. Calculate the Docking Box Center
 
 Docking must be performed inside a defined search region called a docking box.
 
@@ -713,7 +640,7 @@ These values are passed directly into the GNINA docking command.
 
 ---
 
-## Step 19. Run GNINA Docking
+## Step 18. Run GNINA Docking
 
 GNINA docks erlotinib into the EGFR receptor binding pocket.
 
@@ -765,7 +692,7 @@ GNINA searches for possible orientations and conformations of the ligand inside 
 
 ---
 
-## Step 20. View GNINA Docking Scores
+## Step 19. View GNINA Docking Scores
 
 The notebook displays the GNINA log file.
 
@@ -801,7 +728,7 @@ Viewing the log lets the user check whether docking completed successfully and w
 
 ---
 
-## Step 21. Save Docking Scores as a CSV File
+## Step 20. Save Docking Scores as a CSV File
 
 The notebook parses the GNINA log file and saves the scores into a CSV file.
 
@@ -835,7 +762,7 @@ The exact values depend on the docking run.
 
 ---
 
-## Step 22. Visualize the Docked EGFR–Erlotinib Complex
+## Step 21. Visualize the Docked EGFR–Erlotinib Complex
 
 The final step visualizes the receptor and docked ligand together.
 
@@ -887,43 +814,6 @@ After successful execution, the project should contain these important outputs:
 
 ---
 
-## How to Run the Notebook
-
-### Option 1: Run in Google Colab
-
-1. Open Google Colab.
-2. Upload the notebook file.
-3. Enable GPU:
-
-```text
-Runtime → Change runtime type → GPU
-```
-
-4. Run the cells from top to bottom.
-5. Upload the EGFR DNA FASTA file when requested.
-6. Copy the generated kinase-domain FASTA sequence.
-7. Run AlphaFold2 or ColabFold externally using that sequence.
-8. Upload the predicted PDB file when the notebook asks for it.
-9. Continue running the GNINA docking section.
-10. Download or save the final result files.
-
-### Option 2: Run Locally
-
-This notebook is designed mainly for Google Colab. Running locally requires installing:
-
-- Python
-- Biopython
-- pandas
-- NumPy
-- py3Dmol
-- Open Babel
-- GNINA
-- Jupyter Notebook or JupyterLab
-
-Some Colab-specific commands, such as `files.upload()`, must be replaced with local file paths if running outside Colab.
-
----
-
 ## Interpreting the Results
 
 ### Sequence results
@@ -959,33 +849,6 @@ A pose with stronger predicted affinity and good CNN score may be considered a b
 
 ---
 
-## Suggested GitHub Upload Checklist
-
-Before uploading to GitHub, include:
-
-```text
-README.md
-images/
-  central_dogma.png
-  workflow_overview.png
-  folder_structure.png
-  alphafold2_concept.png
-  gnina_docking_concept.png
-egfr_alphafold2_gnina_checked_corrected.ipynb
-```
-
-Optional files to include:
-
-```text
-EGFR_Project/data/example files
-EGFR_Project/docking_results/docking_scores.csv
-EGFR_Project/docking_results/gnina_log.txt
-```
-
-Do not upload very large output files unless needed.
-
----
-
 ## References
 
 - AlphaFold2: protein structure prediction method developed by DeepMind.
@@ -1006,4 +869,3 @@ This project demonstrates a full computational biology pipeline starting from an
 DNA → mRNA → protein → EGFR kinase-domain FASTA → AlphaFold2 predicted structure → GNINA docking → docking score analysis → 3D visualization
 ```
 
-By completing this notebook, the user learns how biological sequence information can be converted into a protein structure and then used in molecular docking for drug-target interaction analysis.

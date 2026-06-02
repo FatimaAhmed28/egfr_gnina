@@ -14,7 +14,7 @@ The project starts from an EGFR DNA FASTA sequence, converts it into mRNA, trans
 
 ## Project Aim
 
-The aim of this project is to demonstrate a complete **in silico drug-discovery style workflow** using EGFR as the target protein.
+The aim of this project is to demonstrate a complete in silico drug-discovery style workflow using EGFR as the target protein.
 
 The workflow explains how a DNA sequence can be converted into a protein sequence and how that protein sequence can be used for structure prediction. After structure-related preparation, the project performs molecular docking to study how a small-molecule inhibitor, **erlotinib**, may bind to the EGFR kinase domain.
 
@@ -27,7 +27,6 @@ This project is useful for students learning:
 - Protein structure prediction using AlphaFold2 or ColabFold
 - Protein-ligand docking using GNINA
 - Docking score interpretation
-- Basic computational drug discovery workflow organization
 
 ---
 
@@ -107,17 +106,13 @@ The notebook does not run the full AlphaFold2 model directly. Instead, it prepar
 
 ## Step 1. Check GPU Availability
 
-The notebook begins by checking whether a GPU is available in Google Colab.
+The notebook begins by checking whether a GPU is available in Google Colab. AlphaFold2/ColabFold and molecular docking can be computationally demanding. A GPU helps speed up structure prediction and may improve performance for deep-learning-based scoring methods. The `nvidia-smi` command displays the available NVIDIA GPU, GPU memory, driver version, and current usage.
 
 Code used:
 
 ```bash
 !nvidia-smi
 ```
-
-### Why this step is important
-
-AlphaFold2/ColabFold and molecular docking can be computationally demanding. A GPU helps speed up structure prediction and may improve performance for deep-learning-based scoring methods. The `nvidia-smi` command displays the available NVIDIA GPU, GPU memory, driver version, and current usage.
 
 ### Expected result
 
@@ -144,8 +139,6 @@ wget
 zip
 ```
 
-### Why this step is important
-
 Different parts of the workflow require different tools:
 
 - **Biopython** reads and writes FASTA files and performs transcription and translation.
@@ -154,16 +147,11 @@ Different parts of the workflow require different tools:
 - **Open Babel** converts ligand molecular file formats.
 - **wget** downloads the EGFR crystal structure from the Protein Data Bank.
 - **zip** can be used to compress project files for submission or sharing.
-
-### Expected result
-
-After installation, the notebook should continue without import errors. Some installation messages may appear; this is normal.
-
 ---
 
 ## Step 3. Upload the EGFR DNA FASTA File
 
-The project starts from DNA. In this step, the user uploads the EGFR DNA FASTA file.
+The project starts from DNA. In this step, the user uploads the EGFR DNA FASTA file. The DNA file is the starting point of the workflow. All later sequence files are generated from this DNA sequence. The notebook assumes the uploaded DNA is a coding sequence. If the input contains introns or non-coding regions, the translated protein sequence may not match the real EGFR protein.
 
 Code used:
 
@@ -171,30 +159,14 @@ Code used:
 from google.colab import files
 uploaded = files.upload()
 ```
-
-### What happens in this step
-
-Google Colab opens a file upload window. The user selects the EGFR DNA FASTA file from their computer. The uploaded file becomes available in the current Colab working directory.
-
-### Why this step is important
-
-The DNA file is the starting point of the workflow. All later sequence files are generated from this DNA sequence:
-
 ```text
 DNA FASTA → mRNA FASTA → protein FASTA
 ```
-
-### Important requirement
-
-The notebook assumes the uploaded DNA is a coding sequence. If the input contains introns or non-coding regions, the translated protein sequence may not match the real EGFR protein.
-
 ---
 
 ## Step 4. Read the DNA Sequence
 
 The notebook automatically detects FASTA files and reads the DNA sequence using Biopython.
-
-### What happens in this step
 
 It reads the first detected FASTA file and stores the sequence as `egfr_dna`.
 
@@ -206,11 +178,9 @@ A, T, G, C
 
 Any invalid letters, spaces, or formatting characters are removed.
 
-### Why this step is important
-
 Before transcription and translation, the sequence must be clean and biologically valid. Invalid characters can cause incorrect transcription, translation errors, or wrong protein output.
 
-### Output generated
+### Output:
 
 The notebook writes a cleaned DNA FASTA file:
 
@@ -230,8 +200,6 @@ EGFR_Project/data/egfr_dna.fasta
 
 Transcription converts DNA into messenger RNA.
 
-### Biological meaning
-
 During transcription:
 
 - DNA thymine `T` becomes RNA uracil `U`.
@@ -245,8 +213,6 @@ DNA:  ATG GAA TTT
 mRNA: AUG GAA UUU
 ```
 
-### What happens in the notebook
-
 Biopython performs transcription using:
 
 ```python
@@ -258,25 +224,13 @@ The resulting mRNA sequence is saved as:
 ```text
 egfr_mrna.fasta
 ```
-
-### Expected result
-
-The notebook prints:
-
-- mRNA length
-- first 100 bases of the mRNA sequence
-
-This lets the user quickly confirm that transcription has happened correctly.
-
 ---
 
 ## Step 6. Translate mRNA into Protein
 
-Translation converts the mRNA sequence into an amino-acid sequence.
+Translation converts the mRNA sequence into an amino-acid sequence.During translation, the ribosome reads mRNA in groups of three nucleotides called codons. Each codon corresponds to one amino acid.
 
-### Biological meaning
-
-During translation, the ribosome reads mRNA in groups of three nucleotides called **codons**. Each codon corresponds to one amino acid.
+AlphaFold2 does not use DNA or RNA as input. It predicts protein structure from an amino-acid sequence. Therefore, the translated protein is required before structure prediction can begin.
 
 Example:
 
@@ -284,8 +238,6 @@ Example:
 mRNA codon: AUG
 Amino acid: Methionine / M
 ```
-
-### What happens in the notebook
 
 Biopython translates the mRNA sequence using:
 
@@ -295,38 +247,21 @@ egfr_protein = egfr_mrna.translate(to_stop=True)
 
 The option `to_stop=True` means translation stops at the first stop codon. This avoids adding stop symbols into the protein sequence.
 
-### Output generated
+### Output:
 
 The translated protein sequence is saved as:
 
 ```text
 egfr_protein.fasta
 ```
-
-### Why this step is important
-
-AlphaFold2 does not use DNA or RNA as input. It predicts protein structure from an amino-acid sequence. Therefore, the translated protein is required before structure prediction can begin.
-
 ---
 
-## Step 7. Create the Project Folder Structure
-
-The notebook creates organized project folders.
-
-Folders created:
-
-```text
-EGFR_Project/data
-EGFR_Project/structures
-EGFR_Project/alphafold_results
-EGFR_Project/docking_results
-EGFR_Project/scripts
-EGFR_Project/images
-```
-
-## Step 8. Prepare the EGFR Kinase-Domain FASTA for AlphaFold2
+## Step 7. Prepare the EGFR Kinase-Domain FASTA for AlphaFold2
 
 The full EGFR protein is large. The notebook extracts the kinase-domain region for structure prediction.
+
+The kinase domain is the region targeted by many EGFR inhibitors. Erlotinib binds near the ATP-binding pocket of this domain. Since the docking part focuses on erlotinib binding, the kinase domain is the most relevant region for this project.
+
 
 ### Region used
 
@@ -342,11 +277,7 @@ In Python, indexing starts from 0, so residue 671 corresponds to index 670:
 egfr_kinase_domain = egfr_full_protein[670:998]
 ```
 
-### Why the kinase domain is selected
-
-The kinase domain is the region targeted by many EGFR inhibitors. Erlotinib binds near the ATP-binding pocket of this domain. Since the docking part focuses on erlotinib binding, the kinase domain is the most relevant region for this project.
-
-### Output generated
+### Output
 
 The extracted kinase-domain sequence is saved as:
 
@@ -358,17 +289,11 @@ This is the sequence that should be submitted to AlphaFold2 or ColabFold.
 
 ---
 
-## Step 9. Display the AlphaFold2 Input Sequence
+## Step 8. Display the AlphaFold2 Input Sequence
 
 The notebook prints the kinase-domain FASTA sequence.
 
-### Why this step is important
-
 Before submitting a sequence to AlphaFold2 or ColabFold, it is important to verify that the correct sequence is being used. This step allows the user to copy and paste the FASTA sequence into AlphaFold2 or ColabFold.
-
-### What to check
-
-Confirm that:
 
 - The sequence has a FASTA header beginning with `>`.
 - The sequence contains only amino-acid letters.
@@ -377,15 +302,11 @@ Confirm that:
 
 ---
 
-## Step 10. Upload the AlphaFold2 Predicted PDB File
+## Step 9. Upload the AlphaFold2 Predicted PDB File
 
 After running AlphaFold2 or ColabFold externally, the predicted PDB structure is uploaded into the notebook.
 
-### What is a PDB file?
-
 A PDB file contains three-dimensional atomic coordinates of a biological molecule. For a predicted protein structure, it stores the position of atoms in the protein chain.
-
-### What happens in this step
 
 The notebook again opens a Colab upload window:
 
@@ -395,36 +316,13 @@ uploaded = files.upload()
 
 The user selects the AlphaFold2/ColabFold predicted `.pdb` file.
 
-### Why this step is important
-
 The predicted PDB file is needed for visualization and project documentation. It represents the 3D structure predicted from the EGFR kinase-domain amino-acid sequence.
 
 ---
 
-## Step 11. Move AlphaFold2 Structures into the Results Folder
-
-The uploaded AlphaFold2 PDB file is moved into:
-
-```text
-EGFR_Project/alphafold_results/
-```
-
-### Why this step is important
-
-This keeps predicted structures separate from experimental structures. In this project:
-
-- AlphaFold2 predicted structures go into `alphafold_results/`.
-- Experimental PDB structures downloaded from RCSB go into `structures/`.
-
-This separation avoids confusion when reviewing files later.
-
----
-
-## Step 12. Visualize the AlphaFold2 Predicted Structure
+## Step 10. Visualize the AlphaFold2 Predicted Structure
 
 The notebook uses `py3Dmol` to display the AlphaFold2 predicted EGFR kinase-domain structure.
-
-### What happens in this step
 
 The notebook:
 
@@ -433,7 +331,7 @@ The notebook:
 3. Opens a 3D viewer.
 4. Displays the protein as a cartoon model.
 
-### Why visualization is important
+### Output
 
 Protein structures are easier to understand visually than as coordinate files. Cartoon visualization helps show:
 
@@ -442,8 +340,6 @@ Protein structures are easier to understand visually than as coordinate files. C
 - Loops
 - Overall domain fold
 
-### Expected output
-
 A 3D interactive protein model should appear inside the notebook. The user can rotate, zoom, and inspect the predicted structure.
 
 <img width="800" height="500" alt="alphafold structure" src="https://github.com/user-attachments/assets/5b59300d-811e-4ff7-bb15-f863ca29efe1" />
@@ -451,27 +347,24 @@ A 3D interactive protein model should appear inside the notebook. The user can r
 
 ---
 
-## Step 13. Download an EGFR Crystal Structure for GNINA Docking
+## Step 11. Download an EGFR Crystal Structure for GNINA Docking
 
 The notebook downloads the EGFR crystal structure with PDB ID:
 
 ```text
 1M17
 ```
+The 1M17 structure contains the EGFR kinase domain bound to erlotinib. This makes it useful for preparing:
+
+- the receptor structure,
+- the erlotinib ligand,
+- the docking box center.
 
 The downloaded file is saved as:
 
 ```text
 EGFR_Project/structures/egfr_1m17.pdb
 ```
-
-### Why this structure is used
-
-The 1M17 structure contains the EGFR kinase domain bound to erlotinib. This makes it useful for preparing:
-
-- the receptor structure,
-- the erlotinib ligand,
-- the docking box center.
 
 ### Why this step comes after AlphaFold2
 
@@ -483,11 +376,9 @@ Protein sequence → predicted structure → docking study
 
 ---
 
-## Step 14. Separate Receptor and Ligand from the PDB File
+## Step 12. Separate Receptor and Ligand from the PDB File
 
-Docking requires the receptor and ligand to be stored as separate files.
-
-### What the notebook extracts
+Docking requires the receptor and ligand to be stored as separate files. GNINA needs a receptor file and ligand file. If the ligand remains inside the receptor PDB file, docking input preparation becomes incorrect. Separating receptor and ligand makes the docking setup clear and controlled.
 
 From `egfr_1m17.pdb`, the notebook separates:
 
@@ -508,17 +399,11 @@ The extracted ligand is saved as:
 EGFR_Project/structures/erlotinib_from_pdb.pdb
 ```
 
-### Why this step is important
-
-GNINA needs a receptor file and ligand file. If the ligand remains inside the receptor PDB file, docking input preparation becomes incorrect. Separating receptor and ligand makes the docking setup clear and controlled.
-
 ---
 
-## Step 15. Install and Check GNINA
+## Step 13. Install GNINA
 
-The notebook downloads GNINA and makes it executable.
-
-### What happens in this step
+The notebook downloads GNINA and makes it executable. Before running docking, the notebook must confirm that GNINA was downloaded correctly and can run inside the Colab environment.
 
 The notebook downloads the GNINA binary:
 
@@ -532,20 +417,11 @@ Then it checks GNINA by running:
 ```bash
 ./gnina --help | head
 ```
-
-### Why this step is important
-
-Before running docking, the notebook must confirm that GNINA was downloaded correctly and can run inside the Colab environment.
-
-### Expected result
-
-The output should show GNINA help text. If it appears, GNINA is installed and ready.
-
 ---
 
-## Step 16. Convert the Ligand into SDF Format
+## Step 14. Convert the Ligand into SDF Format
 
-The extracted erlotinib ligand is converted from PDB format into SDF format using Open Babel.
+The extracted erlotinib ligand is converted from PDB format into SDF format using Open Babel. Ligands can be represented in different chemical file formats. SDF is commonly used for small molecules because it can store atom coordinates, bonding information, and molecular properties.
 
 ### Input file
 
@@ -559,27 +435,17 @@ EGFR_Project/structures/erlotinib_from_pdb.pdb
 EGFR_Project/structures/erlotinib.sdf
 ```
 
-### Why conversion is needed
-
-Ligands can be represented in different chemical file formats. SDF is commonly used for small molecules because it can store atom coordinates, bonding information, and molecular properties.
-
 The notebook uses:
 
 ```bash
 obabel erlotinib_from_pdb.pdb -O erlotinib.sdf --gen3d
 ```
 
-### Expected result
-
-After conversion, the SDF file should appear in the `structures/` folder.
-
 ---
 
-## Step 17. Calculate the Docking Box Center
+## Step 15. Calculate the Docking Box Center
 
-Docking must be performed inside a defined search region called a docking box.
-
-### What happens in this step
+Docking must be performed inside a defined search region called a docking box. Erlotinib is already present in the 1M17 crystal structure, its position marks the known binding pocket. Using the ligand's average coordinate is a practical way to center the docking search box around the active site.
 
 The notebook reads the coordinates of the extracted erlotinib ligand atoms and calculates the mean coordinate:
 
@@ -595,11 +461,7 @@ center_y
 center_z
 ```
 
-### Why this method is used
-
-Because erlotinib is already present in the 1M17 crystal structure, its position marks the known binding pocket. Using the ligand's average coordinate is a practical way to center the docking search box around the active site.
-
-### Expected output
+### output
 
 The notebook prints values like:
 
@@ -613,7 +475,7 @@ These values are passed directly into the GNINA docking command.
 
 ---
 
-## Step 18. Run GNINA Docking
+## Step 16. Run GNINA Docking
 
 GNINA docks erlotinib into the EGFR receptor binding pocket.
 
@@ -665,11 +527,11 @@ GNINA searches for possible orientations and conformations of the ligand inside 
 
 ---
 
-## Step 19. View GNINA Docking Scores
+## Step 17. View GNINA Docking Scores
 
 The notebook displays the GNINA log file.
 
-### Important score columns
+### Score columns
 
 GNINA commonly reports values such as:
 
@@ -679,7 +541,7 @@ GNINA commonly reports values such as:
 | CNN score | Neural-network-based pose quality score |
 | CNN affinity | Neural-network-predicted binding affinity |
 
-### How to interpret affinity
+### Interpret affinity
 
 A more negative affinity value generally suggests stronger predicted binding. For example:
 
@@ -695,13 +557,9 @@ is usually considered stronger than:
 
 However, docking scores are predictions. They should not be treated as experimental proof of binding.
 
-### Why this step is important
-
-Viewing the log lets the user check whether docking completed successfully and whether score values were produced.
-
 ---
 
-## Step 20. Save Docking Scores as a CSV File
+## Step 18. Save Docking Scores as a CSV File
 
 The notebook parses the GNINA log file and saves the scores into a CSV file.
 ## Docking Results
@@ -740,11 +598,10 @@ Overall, the docking results indicate that the ligand shows favorable predicted 
 
 ---
 
-## Step 21. Visualize the Docked EGFR–Erlotinib Complex
+## Step 19. Visualize the Docked EGFR–Erlotinib Complex
 
-The final step visualizes the receptor and docked ligand together.
+The final step visualizes the receptor and docked ligand together. Docking scores are useful, but visual inspection is also important. Visualization helps confirm whether the ligand is positioned inside the expected binding pocket.
 
-### What happens in this step
 
 The notebook loads:
 
@@ -755,10 +612,6 @@ Then `py3Dmol` displays:
 
 - the receptor as a cartoon model,
 - the docked ligand as sticks.
-
-### Why this step is important
-
-Docking scores are useful, but visual inspection is also important. Visualization helps confirm whether the ligand is positioned inside the expected binding pocket.
 
 <img width="800" height="500" alt="Gnina result" src="https://github.com/user-attachments/assets/f90868c9-0244-4f54-bc49-ff1384de6fce" />
 
